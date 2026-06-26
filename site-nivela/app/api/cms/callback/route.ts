@@ -27,14 +27,13 @@ function buildCallbackHtml(token: string) {
       (function () {
         const token = ${JSON.stringify(token)};
 
-        function receiveMessage() {
-          window.opener.postMessage('authorization:github:success:' + JSON.stringify({ token }), '*');
-          window.removeEventListener('message', receiveMessage, false);
-          window.close();
+        try {
+          window.sessionStorage.setItem('teste_auth_token', token);
+        } catch (error) {
+          console.error('Unable to persist auth token for the test page', error);
         }
 
-        window.addEventListener('message', receiveMessage, false);
-        window.opener.postMessage('authorizing:github', '*');
+        window.location.replace('/teste_auth?result=success');
       })();
     </script>
   </body>
