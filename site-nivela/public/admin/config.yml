@@ -1,0 +1,59 @@
+backend:
+  name: github
+  repo: lucasBnunes4/siteNivela
+  branch: main
+  base_url: https://site-nivela.vercel.app/api/cms
+  auth_endpoint: /auth
+  use_graphql: true
+
+local_backend: true
+publish_mode: editorial_workflow
+media_folder: public/uploads
+public_folder: /uploads
+
+site_url: https://site-nivela.vercel.app
+display_url: https://site-nivela.vercel.app
+
+collections:
+  - name: posts
+    label: Posts
+    label_singular: Post
+    folder: content/posts
+    create: true
+    slug: "{{slug}}"
+    preview_path: blog/{{slug}}
+    fields:
+      - { label: Título, name: title, widget: string }
+      - { label: Slug, name: slug, widget: string }
+      - { label: Data, name: date, widget: datetime, format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false }
+      - { label: Descrição, name: description, widget: text }
+      - { label: Imagem de capa, name: coverImage, widget: image, required: false }
+      - { label: Rascunho, name: draft, widget: boolean, default: false, required: false }
+      - { label: Conteúdo, name: body, widget: markdown }
+  - name: pages
+    label: Páginas
+    files:
+      - name: sobre
+        label: Sobre
+        file: content/pages/sobre.md
+        fields:
+          - { label: Título, name: title, widget: string }
+          - { label: Slug, name: slug, widget: string }
+          - { label: Descrição, name: description, widget: text, required: false }
+          - { label: Conteúdo, name: body, widget: markdown }
+      - name: servicos
+        label: Serviços
+        file: content/pages/servicos.md
+        fields:
+          - { label: Título, name: title, widget: string }
+          - { label: Slug, name: slug, widget: string }
+          - { label: Descrição, name: description, widget: text, required: false }
+          - { label: Conteúdo, name: body, widget: markdown }
+      - name: avaliacao-tecnica
+        label: Avaliação técnica
+        file: content/pages/avaliacao-tecnica.md
+        fields:
+          - { label: Título, name: title, widget: string }
+          - { label: Slug, name: slug, widget: string }
+          - { label: Descrição, name: description, widget: text, required: false }
+          - { label: Conteúdo, name: body, widget: markdown }
