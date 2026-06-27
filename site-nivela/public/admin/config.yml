@@ -9,7 +9,6 @@ backend:
 publish_mode: editorial_workflow
 media_folder: public/uploads
 public_folder: /uploads
-
 site_url: http://localhost:3000
 display_url: http://localhost:3000
 
@@ -22,13 +21,26 @@ collections:
     slug: "{{slug}}"
     preview_path: blog/{{slug}}
     fields:
-      - { label: Título, name: title, widget: string }
-      - { label: Slug, name: slug, widget: string }
-      - { label: Data, name: date, widget: datetime, format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false }
-      - { label: Descrição, name: description, widget: text }
+      - { label: Título, name: title, widget: string, required: true }
+      - { label: Slug, name: slug, widget: string, required: true }
+      - { label: Data, name: date, widget: datetime, format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false, required: true }
+      - { label: Categoria, name: category, widget: relation, collection: categories, search_fields: [name], value_field: slug, display_fields: [name], required: true }
+      - { label: Descrição, name: description, widget: text, required: true }
       - { label: Imagem de capa, name: coverImage, widget: image, required: false }
       - { label: Rascunho, name: draft, widget: boolean, default: false, required: false }
-      - { label: Conteúdo, name: body, widget: markdown }
+      - { label: Conteúdo, name: body, widget: markdown, required: true }
+
+  - name: categories
+    label: Categorias
+    label_singular: Categoria
+    folder: content/categories
+    create: true
+    identifier_field: name
+    fields:
+      - { label: Nome, name: name, widget: string, required: true }
+      - { label: Slug, name: slug, widget: string, required: true }
+      - { label: Descrição, name: description, widget: text, required: false }
+
   - name: pages
     label: Páginas
     files:
