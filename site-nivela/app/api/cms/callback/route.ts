@@ -15,6 +15,8 @@ function buildCallbackUrl(request: NextRequest) {
 }
 
 function buildCallbackHtml(token: string) {
+  const payload = JSON.stringify({ token, provider: "github" });
+
   return `<!doctype html>
 <html lang="pt-BR">
   <head>
@@ -23,17 +25,42 @@ function buildCallbackHtml(token: string) {
     <title>Autenticando o CMS</title>
   </head>
   <body>
+    <noscript>JavaScript precisa estar habilitado para finalizar o login do CMS.</noscript>
+    <p>Autenticacao concluida. Finalizando login no CMS...</p>
     <script>
       (function () {
-        const token = ${JSON.stringify(token)};
+        var authorizationMessage = 'authorization:github:success:' + ${JSON.stringify(payload)};
+        var attempts = 0;
 
-        try {
-          window.sessionStorage.setItem('teste_auth_token', token);
-        } catch (error) {
-          console.error('Unable to persist auth token for the test page', error);
+        function showFallbackMessage(message) {
+          document.body.textContent = message;
         }
 
-        window.location.replace('/teste_auth?result=success');
+        function sendAuthorization() {
+          if (!window.opener || window.opener.closed) {
+            showFallbackMessage('Nao foi possivel encontrar a janela do CMS. Feche esta aba e tente novamente pelo /admin.');
+            return;
+          }
+
+          window.opener.postMessage(authorizationMessage, '*');
+          attempts += 1;
+
+          if (attempts >= 4) {
+            window.close();
+          }
+        }
+
+        if (!window.opener || window.opener.closed) {
+          showFallbackMessage('Login autorizado, mas a janela do CMS nao esta aberta. Volte ao /admin e tente novamente.');
+          return;
+        }
+
+        window.opener.postMessage('authorizing:github', '*');
+
+        sendAuthorization();
+        window.setTimeout(sendAuthorization, 250);
+        window.setTimeout(sendAuthorization, 750);
+        window.setTimeout(sendAuthorization, 1500);
       })();
     </script>
   </body>
@@ -41,7 +68,7 @@ function buildCallbackHtml(token: string) {
 }
 
 export async function GET(request: NextRequest) {
-  const provider = request.nextUrl.searchParams.get("provider");
+  const provider = request.nextUrl.searchParams.get("provider") ?? "github";
   const code = request.nextUrl.searchParams.get("code");
   const returnedState = request.nextUrl.searchParams.get("state");
   const expectedState = request.cookies.get("decap_oauth_state")?.value;
@@ -54,13 +81,24 @@ export async function GET(request: NextRequest) {
 
   if (!clientId || !clientSecret) {
     return NextResponse.json(
-      { error: "Missing GITHUB_CLIENT_ID or GITHUB_CLIENT_SECRET environment variables." },
+      {
+        error:
+          "Missing GITHUB_CLIENT_ID or GITHUB_CLIENT_SECRET environment variables.",
+      },
       { status: 500 },
     );
   }
 
-  if (!code || !returnedState || !expectedState || returnedState !== expectedState) {
-    return NextResponse.json({ error: "Invalid OAuth callback." }, { status: 400 });
+  if (
+    !code ||
+    !returnedState ||
+    !expectedState ||
+    returnedState !== expectedState
+  ) {
+    return NextResponse.json(
+      { error: "Invalid OAuth callback." },
+      { status: 400 },
+    );
   }
 
   const tokenResponse = await fetch(githubTokenUrl, {
@@ -78,31 +116,39 @@ export async function GET(request: NextRequest) {
     }),
   });
 
-  const tokenPayload: { access_token?: string; error?: string; error_description?: string } =
-    await tokenResponse.json();
+  const tokenPayload: {
+    access_token?: string;
+    error?: string;
+    error_description?: string;
+  } = await tokenResponse.json();
 
   if (!tokenResponse.ok || !tokenPayload.access_token) {
     return NextResponse.json(
       {
-        error: tokenPayload.error ?? "Unable to exchange the authorization code for a token.",
+        error:
+          tokenPayload.error ??
+          "Unable to exchange the authorization code for a token.",
         description: tokenPayload.error_description ?? null,
       },
       { status: 500 },
     );
   }
 
-  const response = new NextResponse(buildCallbackHtml(tokenPayload.access_token), {
-    headers: {
-      "Content-Type": "text/html; charset=utf-8",
-      "Cache-Control": "no-store",
+  const response = new NextResponse(
+    buildCallbackHtml(tokenPayload.access_token),
+    {
+      headers: {
+        "Content-Type": "text/html; charset=utf-8",
+        "Cache-Control": "no-store",
+      },
     },
-  });
+  );
 
   response.cookies.set("decap_oauth_state", "", {
     httpOnly: true,
     sameSite: "lax",
     secure: request.nextUrl.protocol === "https:",
-    path: "/api/cms",
+    path: "/",
     maxAge: 0,
   });
 

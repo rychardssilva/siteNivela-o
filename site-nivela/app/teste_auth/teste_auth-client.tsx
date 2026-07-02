@@ -1,15 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 type TesteAuthClientProps = {
   authenticated: boolean;
 };
 
 export default function TesteAuthClient({ authenticated }: TesteAuthClientProps) {
-  const [tokenPresent, setTokenPresent] = useState(false);
-  const [messageSent, setMessageSent] = useState(false);
-
   useEffect(() => {
     if (!authenticated) {
       return;
@@ -23,14 +20,11 @@ export default function TesteAuthClient({ authenticated }: TesteAuthClientProps)
       console.error("Unable to read auth token from sessionStorage", error);
     }
 
-    setTokenPresent(Boolean(token));
-
     if (!token || !window.opener || window.opener.closed) {
       return;
     }
 
     window.opener.postMessage(`authorization:github:success:${JSON.stringify({ token })}`, "*");
-    setMessageSent(true);
   }, [authenticated]);
 
   return (
@@ -38,19 +32,20 @@ export default function TesteAuthClient({ authenticated }: TesteAuthClientProps)
       <section className="w-full max-w-xl rounded-3xl border border-white/10 bg-white/5 p-8 shadow-2xl shadow-black/20 backdrop-blur">
         <p className="text-sm font-semibold uppercase tracking-[0.3em] text-emerald-300">teste_auth</p>
         <h1 className="mt-4 text-3xl font-semibold tracking-tight text-white">
-          {authenticated ? "Autenticação confirmada" : "Aguardando autenticação"}
+          {authenticated ? "Autenticacao confirmada" : "Aguardando autenticacao"}
         </h1>
         <p className="mt-4 text-base leading-7 text-slate-300">
           {authenticated
-            ? "O CMS recebeu o token do GitHub com sucesso e o login foi concluído."
-            : "Esta página serve para confirmar visualmente que o fluxo de autenticação concluiu com sucesso."}
+            ? "O CMS recebeu o token do GitHub e a pagina tentou concluir o login."
+            : "Esta pagina serve apenas para confirmar visualmente o fluxo de autenticacao."}
         </p>
         <div className="mt-6 rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-sm text-slate-300">
           Estado: <span className="font-mono text-slate-100">{authenticated ? "success" : "waiting"}</span>
           <br />
-          Token detectado: <span className="font-mono text-slate-100">{tokenPresent ? "sim" : "não"}</span>
+          Token detectado: <span className="font-mono text-slate-100">{authenticated ? "verificado" : "nao"}</span>
           <br />
-          Mensagem enviada ao CMS: <span className="font-mono text-slate-100">{messageSent ? "sim" : "não"}</span>
+          Mensagem enviada ao CMS:{" "}
+          <span className="font-mono text-slate-100">{authenticated ? "tentativa enviada" : "nao"}</span>
         </div>
         <div className="mt-6 rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-sm text-slate-300">
           URL de teste: <span className="font-mono text-slate-100">/teste_auth?result=success</span>

@@ -2,12 +2,12 @@ backend:
   name: github
   repo: lucasBnunes4/siteNivela
   branch: main
-  base_url: http://localhost:3000/api/cms
-  auth_endpoint: /auth
+  base_url: http://localhost:3000
+  auth_endpoint: api/cms/auth
   use_graphql: true
 
 publish_mode: editorial_workflow
-media_folder: public/uploads
+media_folder: site-nivela/public/uploads
 public_folder: /uploads
 site_url: http://localhost:3000
 display_url: http://localhost:3000
@@ -16,7 +16,7 @@ collections:
   - name: posts
     label: Posts
     label_singular: Post
-    folder: content/posts
+    folder: site-nivela/content/posts
     create: true
     slug: "{{slug}}"
     preview_path: blog/{{slug}}
@@ -33,7 +33,7 @@ collections:
   - name: categories
     label: Categorias
     label_singular: Categoria
-    folder: content/categories
+    folder: site-nivela/content/categories
     create: true
     identifier_field: name
     fields:
@@ -46,7 +46,7 @@ collections:
     files:
       - name: sobre
         label: Sobre
-        file: content/pages/sobre.md
+        file: site-nivela/content/pages/sobre.md
         fields:
           - { label: Título, name: title, widget: string }
           - { label: Slug, name: slug, widget: string }
@@ -54,7 +54,7 @@ collections:
           - { label: Conteúdo, name: body, widget: markdown }
       - name: servicos
         label: Serviços
-        file: content/pages/servicos.md
+        file: site-nivela/content/pages/servicos.md
         fields:
           - { label: Título, name: title, widget: string }
           - { label: Slug, name: slug, widget: string }
@@ -62,7 +62,7 @@ collections:
           - { label: Conteúdo, name: body, widget: markdown }
       - name: avaliacao-tecnica
         label: Avaliação técnica
-        file: content/pages/avaliacao-tecnica.md
+        file: site-nivela/content/pages/avaliacao-tecnica.md
         fields:
           - { label: Título, name: title, widget: string }
           - { label: Slug, name: slug, widget: string }

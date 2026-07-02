@@ -17,7 +17,7 @@ function buildCallbackUrl(request: NextRequest) {
 }
 
 export async function GET(request: NextRequest) {
-  const provider = request.nextUrl.searchParams.get("provider");
+  const provider = request.nextUrl.searchParams.get("provider") ?? "github";
 
   if (provider !== "github") {
     return NextResponse.json({ error: "Invalid provider." }, { status: 400 });
@@ -47,7 +47,7 @@ export async function GET(request: NextRequest) {
     httpOnly: true,
     sameSite: "lax",
     secure: request.nextUrl.protocol === "https:",
-    path: "/api/cms",
+    path: "/",
     maxAge: 10 * 60,
   });
 
