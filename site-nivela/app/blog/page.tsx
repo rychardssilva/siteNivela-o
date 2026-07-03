@@ -25,7 +25,7 @@ export default function BlogPage() {
         <span className="section-label">Conhecimento técnico</span>
         <h1>Entenda o seu imóvel antes de tomar decisões</h1>
         <p>
-          Artigos escritos por engenheiro civil para proprietários, construtoras
+          Artigos escritos por engenheiro agrimensor para proprietários, construtoras
           e advogados que precisam de clareza técnica sem juridiquês.
         </p>
       </section>
