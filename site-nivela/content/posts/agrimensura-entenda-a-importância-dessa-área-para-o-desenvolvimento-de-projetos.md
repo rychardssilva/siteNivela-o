@@ -8,7 +8,7 @@ slug: A agrimensura é uma área essencial para o planejamento, execução e
   agrimensura fornece dados precisos que servem como base para tomadas de
   decisão e para a execução segura de obras.
 date: 2006-07-03
-category: teste_geral
+category: topografia
 description: Agrimensura
 coverImage: /uploads/testeblog.webp
 draft: false
