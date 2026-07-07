@@ -22,7 +22,14 @@ collections:
     preview_path: blog/{{slug}}
     fields:
       - { label: Título, name: title, widget: string, required: true }
-      - { label: Slug, name: slug, widget: string, required: true }
+      - {
+          label: Slug,
+          name: slug,
+          widget: string,
+          required: true,
+          hint: "Use apenas letras minúsculas, números e hífens. Sem espaços, acentos ou caracteres especiais. Ex: tema-principal-do-artigo",
+          pattern: ["^(?=.{1,80}$)[a-z0-9]+(?:-[a-z0-9]+)*$", "Slug inválido"]
+        }
       - { label: Data, name: date, widget: datetime, format: "YYYY-MM-DD", date_format: "YYYY-MM-DD", time_format: false, required: true }
       - { label: Categoria, name: category, widget: relation, collection: categories, search_fields: [name], value_field: slug, display_fields: [name], required: true }
       - { label: Descrição, name: description, widget: text, required: true }
@@ -38,7 +45,14 @@ collections:
     identifier_field: name
     fields:
       - { label: Nome, name: name, widget: string, required: true }
-      - { label: Slug, name: slug, widget: string, required: true }
+      - {
+          label: Slug,
+          name: slug,
+          widget: string,
+          required: true,
+          hint: "Use apenas letras minúsculas, números e hífens. Sem espaços, acentos ou caracteres especiais. Ex: tema-principal-do-artigo",
+          pattern: ["^(?=.{1,80}$)[a-z0-9]+(?:-[a-z0-9]+)*$", "Slug inválido"]
+        }
       - { label: Descrição, name: description, widget: text, required: false }
 
   - name: pages
@@ -49,7 +63,13 @@ collections:
         file: site-nivela/content/pages/sobre.md
         fields:
           - { label: Título, name: title, widget: string }
-          - { label: Slug, name: slug, widget: string }
+          - {
+              label: Slug,
+              name: slug,
+              widget: string,
+              hint: "Use apenas letras minúsculas, números e hífens. Sem espaços, acentos ou caracteres especiais. Ex: tema-principal-do-artigo",
+              pattern: ["^(?=.{1,80}$)[a-z0-9]+(?:-[a-z0-9]+)*$", "Slug inválido"]
+            }
           - { label: Descrição, name: description, widget: text, required: false }
           - { label: Conteúdo, name: body, widget: markdown }
       - name: servicos
@@ -57,7 +77,13 @@ collections:
         file: site-nivela/content/pages/servicos.md
         fields:
           - { label: Título, name: title, widget: string }
-          - { label: Slug, name: slug, widget: string }
+          - {
+              label: Slug,
+              name: slug,
+              widget: string,
+              hint: "Use apenas letras minúsculas, números e hífens. Sem espaços, acentos ou caracteres especiais. Ex: tema-principal-do-artigo",
+              pattern: ["^(?=.{1,80}$)[a-z0-9]+(?:-[a-z0-9]+)*$", "Slug inválido"]
+            }
           - { label: Descrição, name: description, widget: text, required: false }
           - { label: Conteúdo, name: body, widget: markdown }
       - name: avaliacao-tecnica
@@ -65,6 +91,12 @@ collections:
         file: site-nivela/content/pages/avaliacao-tecnica.md
         fields:
           - { label: Título, name: title, widget: string }
-          - { label: Slug, name: slug, widget: string }
+          - {
+              label: Slug,
+              name: slug,
+              widget: string,
+              hint: "Use apenas letras minúsculas, números e hífens. Sem espaços, acentos ou caracteres especiais. Ex: tema-principal-do-artigo",
+              pattern: ["^(?=.{1,80}$)[a-z0-9]+(?:-[a-z0-9]+)*$", "Slug inválido"]
+            }
           - { label: Descrição, name: description, widget: text, required: false }
           - { label: Conteúdo, name: body, widget: markdown }

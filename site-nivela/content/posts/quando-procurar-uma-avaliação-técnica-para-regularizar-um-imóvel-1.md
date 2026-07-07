@@ -1,6 +1,6 @@
 ---
 title: Quando procurar uma avaliação técnica para regularizar um imóvel?
-slug: "avaliacao-tecnica-regularizacao-imovel \t"
+slug: "avaliacao-tecnica-regularizacao-imovel"
 date: 2026-07-06
 category: teste-5
 description: >2
