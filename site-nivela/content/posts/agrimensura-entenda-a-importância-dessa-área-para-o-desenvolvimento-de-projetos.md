@@ -1,12 +1,7 @@
 ---
 title: "Agrimensura: Entenda a importância dessa área para o desenvolvimento de
   projetos"
-slug: A agrimensura é uma área essencial para o planejamento, execução e
-  acompanhamento de diversos projetos de engenharia, arquitetura, construção
-  civil, infraestrutura e regularização fundiária. Por meio de técnicas de
-  medição e levantamento de informações do terreno, o profissional de
-  agrimensura fornece dados precisos que servem como base para tomadas de
-  decisão e para a execução segura de obras.
+slug: agrimensura-importancia-desenvolvimento-projetos
 date: 2006-07-03
 category: topografia
 description: Agrimensura
