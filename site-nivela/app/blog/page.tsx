@@ -5,6 +5,12 @@ import { getAllPosts, getPostCategories } from "@/lib/posts";
 
 const fallbackColors = ["#0f3c57", "#1a4a2e", "#2f4f4f", "#3d2b00"];
 
+type BlogPageProps = {
+  searchParams?: Promise<{
+    categoria?: string;
+  }>;
+};
+
 function getInitials(value: string) {
   return value
     .split(/\s+/)
@@ -15,9 +21,17 @@ function getInitials(value: string) {
     .toUpperCase();
 }
 
-export default function BlogPage() {
-  const posts = getAllPosts();
+export default async function BlogPage({ searchParams }: BlogPageProps) {
+  const params = await searchParams;
+  const selectedCategory = params?.categoria ?? "";
+  const allPosts = getAllPosts();
   const categories = getPostCategories();
+  const posts = selectedCategory
+    ? allPosts.filter((post) => post.category === selectedCategory)
+    : allPosts;
+  const selectedCategoryLabel =
+    categories.find((category) => category.slug === selectedCategory)?.label ??
+    "categoria selecionada";
 
   return (
     <main>
@@ -32,15 +46,23 @@ export default function BlogPage() {
 
       <section className="section blog-page-section">
         <div className="blog-cats" aria-label="Categorias do blog">
-          {categories.map((category, index) => (
-            <button
-              className={index === 0 ? "cat-btn active" : "cat-btn"}
-              key={category}
-              type="button"
-            >
-              {category}
-            </button>
-          ))}
+          {categories.map((category) => {
+            const isActive = category.slug === selectedCategory;
+            const href = category.slug
+              ? `/blog?categoria=${encodeURIComponent(category.slug)}`
+              : "/blog";
+
+            return (
+              <Link
+                aria-current={isActive ? "page" : undefined}
+                className={isActive ? "cat-btn active" : "cat-btn"}
+                href={href}
+                key={category.slug || "todos"}
+              >
+                {category.label}
+              </Link>
+            );
+          })}
         </div>
 
         {posts.length > 0 ? (
@@ -82,7 +104,9 @@ export default function BlogPage() {
             ))}
           </div>
         ) : (
-          <p className="empty-state">Nenhum artigo publicado ainda.</p>
+          <p className="empty-state">
+            Nenhum artigo encontrado em {selectedCategoryLabel}.
+          </p>
         )}
       </section>
     </main>

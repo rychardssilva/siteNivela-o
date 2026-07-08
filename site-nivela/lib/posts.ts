@@ -25,6 +25,11 @@ type Category = {
   name: string;
 };
 
+export type PostCategory = {
+  slug: string;
+  label: string;
+};
+
 function readMarkdownFiles(directory: string) {
   if (!fs.existsSync(directory)) {
     return [];
@@ -65,6 +70,17 @@ function estimateReadTime(body: string) {
   return `${minutes} min de leitura`;
 }
 
+function normalizeSlug(value: string) {
+  return value
+    .replace(/\\t/g, " ")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
 function toPost(file: string, source: string, categories: Record<string, Category>): Post {
   const parsed = parseMarkdown(source);
   const fallbackSlug = file.replace(/\.md$/, "");
@@ -73,7 +89,7 @@ function toPost(file: string, source: string, categories: Record<string, Categor
 
   return {
     title: String(parsed.data.title ?? fallbackSlug),
-    slug: String(parsed.data.slug ?? fallbackSlug),
+    slug: normalizeSlug(String(parsed.data.slug ?? fallbackSlug)),
     date: String(parsed.data.date ?? ""),
     category,
     categoryLabel: categories[category]?.name ?? category,
@@ -101,7 +117,16 @@ export function getPostBySlug(slug: string) {
 }
 
 export function getPostCategories() {
-  const labels = getAllPosts().map((post) => post.categoryLabel).filter(Boolean);
+  const categories = getAllPosts()
+    .filter((post) => post.category)
+    .map<PostCategory>((post) => ({
+      slug: post.category,
+      label: post.categoryLabel || post.category,
+    }));
 
-  return ["Todos", ...Array.from(new Set(labels))];
+  const uniqueCategories = Array.from(
+    new Map(categories.map((category) => [category.slug, category])).values(),
+  );
+
+  return [{ slug: "", label: "Todos" }, ...uniqueCategories];
 }

@@ -1,6 +1,6 @@
 ---
 title: O que é um levantamento topográfico e quando ele é necessário?
-slug: levantamento-topografico-quando-e-necessário
+slug: levantamento-topografico-quando-e-necessario
 date: 2026-07-03
 category: topografia
 description: >+
