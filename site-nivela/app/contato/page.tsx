@@ -1,3 +1,7 @@
+"use client";
+
+import { useState } from "react";
+
 const methods = [
   {
     icon: "WA",
@@ -20,6 +24,53 @@ const methods = [
 ];
 
 export default function ContatoPage() {
+  const [name, setName] = useState("");
+  const [contact, setContact] = useState("");
+  const [subject, setSubject] = useState("Orçamento");
+  const [message, setMessage] = useState("");
+
+  const [loading, setLoading] = useState(false);
+  const [status, setStatus] = useState<{ type: "success" | "error"; text: string } | null>(null);
+
+  async function handleSubmit(e: React.FormEvent | React.MouseEvent) {
+    e.preventDefault();
+    setLoading(true);
+    setStatus(null);
+
+    if (!name.trim() || !contact.trim() || !message.trim()) {
+      setStatus({ type: "error", text: "Por favor, preencha todos os campos obrigatórios." });
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const response = await fetch("/api/contato", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name, contact, subject, message }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Ocorreu um erro ao enviar a mensagem.");
+      }
+
+      setStatus({ type: "success", text: "Mensagem enviada com sucesso!" });
+      
+      setName("");
+      setContact("");
+      setSubject("Orçamento");
+      setMessage("");
+    } catch (error: any) {
+      setStatus({ type: "error", text: error.message || "Erro de conexão. Tente novamente." });
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return (
     <main>
       <section className="sobre-hero">
@@ -59,7 +110,14 @@ export default function ContatoPage() {
 
             <div className="form-group">
               <label htmlFor="name">Nome</label>
-              <input id="name" type="text" placeholder="Seu nome completo" />
+              <input 
+                id="name" 
+                type="text" 
+                placeholder="Seu nome completo" 
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+              />
             </div>
 
             <div className="form-group">
@@ -68,16 +126,23 @@ export default function ContatoPage() {
                 id="contact"
                 type="text"
                 placeholder="Como prefere receber retorno?"
+                value={contact}
+                onChange={(e) => setContact(e.target.value)}
+                required
               />
             </div>
 
             <div className="form-group">
               <label htmlFor="subject">Assunto</label>
-              <select id="subject" defaultValue="Orçamento">
-                <option>Orçamento</option>
-                <option>Dúvida técnica</option>
-                <option>Parceria</option>
-                <option>Outro</option>
+              <select 
+                id="subject" 
+                value={subject}
+                onChange={(e) => setSubject(e.target.value)}
+              >
+                <option value="Orçamento">Orçamento</option>
+                <option value="Dúvida técnica">Dúvida técnica</option>
+                <option value="Parceria">Parceria</option>
+                <option value="Outro">Outro</option>
               </select>
             </div>
 
@@ -86,11 +151,33 @@ export default function ContatoPage() {
               <textarea
                 id="message"
                 placeholder="Descreva sua necessidade..."
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                required
               />
             </div>
 
-            <button className="form-submit" type="submit">
-              Enviar mensagem
+            {status && (
+              <div style={{
+                padding: '12px',
+                marginBottom: '16px',
+                borderRadius: '4px',
+                fontSize: '14px',
+                backgroundColor: status.type === 'success' ? '#e6f4ea' : '#fce8e6',
+                color: status.type === 'success' ? '#137333' : '#c5221f',
+                border: `1px solid ${status.type === 'success' ? '#b7e1cd' : '#f5c2c1'}`
+              }}>
+                {status.text}
+              </div>
+            )}
+            <button 
+              className="form-submit" 
+              type="button" 
+              onClick={handleSubmit}
+              disabled={loading}
+              style={{ opacity: loading ? 0.7 : 1, cursor: loading ? 'not-allowed' : 'pointer' }}
+            >
+              {loading ? "Enviando..." : "Enviar mensagem"}
             </button>
           </form>
         </div>
