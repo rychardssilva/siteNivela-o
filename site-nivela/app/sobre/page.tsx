@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { getCmsPage } from "@/lib/pages";
+import { whatsappHref } from "@/lib/whatsapp";
 
 const values = [
   {
@@ -109,9 +110,14 @@ export default function SobrePage() {
           Pronto para resolver a situação <em>técnica do seu imóvel?</em>
         </h2>
         <div className="cta-btns">
-          <Link href="/contato" className="btn-whatsapp">
+          <a
+            href={whatsappHref}
+            className="btn-whatsapp"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             WhatsApp
-          </Link>
+          </a>
           <Link href="/contato" className="btn-gold">
             Solicitar Avaliação
           </Link>

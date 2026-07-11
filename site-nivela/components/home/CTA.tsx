@@ -1,5 +1,7 @@
 import Link from "next/link";
 
+import { whatsappHref } from "@/lib/whatsapp";
+
 export default function CTA() {
   return (
     <section className="cta-band">
@@ -8,9 +10,14 @@ export default function CTA() {
       </h2>
 
       <div className="cta-btns">
-        <Link href="/contato" className="btn-whatsapp">
+        <a
+          href={whatsappHref}
+          className="btn-whatsapp"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           WhatsApp
-        </Link>
+        </a>
 
         <Link href="/contato" className="btn-gold">
           Avaliação Técnica

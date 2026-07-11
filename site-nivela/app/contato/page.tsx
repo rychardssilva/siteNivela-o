@@ -64,8 +64,11 @@ export default function ContatoPage() {
       setContact("");
       setSubject("Orçamento");
       setMessage("");
-    } catch (error: any) {
-      setStatus({ type: "error", text: error.message || "Erro de conexão. Tente novamente." });
+    } catch (error: unknown) {
+      const errorMessage =
+        error instanceof Error ? error.message : "Erro de conexão. Tente novamente.";
+
+      setStatus({ type: "error", text: errorMessage });
     } finally {
       setLoading(false);
     }

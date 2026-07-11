@@ -1,5 +1,7 @@
 import Link from "next/link";
 
+import { whatsappHref } from "@/lib/whatsapp";
+
 const contactHref = "/contato?assunto=avaliacao-tecnica";
 
 const problems = [
@@ -211,9 +213,14 @@ export default function AvaliacaoTecnicaPage() {
           Quer entender a situação <em>técnica do seu imóvel?</em>
         </h2>
         <div className="cta-btns">
-          <Link href="/contato" className="btn-whatsapp">
+          <a
+            href={whatsappHref}
+            className="btn-whatsapp"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             WhatsApp
-          </Link>
+          </a>
           <Link href={contactHref} className="btn-gold">
             Solicitar avaliação
           </Link>

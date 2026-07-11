@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { getCmsPage } from "@/lib/pages";
+import { whatsappHref } from "@/lib/whatsapp";
 
 const services = [
   {
@@ -86,9 +87,14 @@ export default function ServicosPage() {
           Não sabe qual serviço é o <em>certo para você?</em> A gente explica.
         </h2>
         <div className="cta-btns">
-          <Link href="/contato" className="btn-whatsapp">
+          <a
+            href={whatsappHref}
+            className="btn-whatsapp"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             WhatsApp
-          </Link>
+          </a>
           <Link href="/contato" className="btn-gold">
             Avaliação Gratuita
           </Link>
