@@ -2,15 +2,15 @@ backend:
   name: github
   repo: lucasBnunes4/siteNivela
   branch: main
-  base_url: http://localhost:3000
+  base_url: https://site-nivela-nine.vercel.app
   auth_endpoint: api/cms/auth
   use_graphql: true
 
 publish_mode: editorial_workflow
 media_folder: site-nivela/public/uploads
 public_folder: /uploads
-site_url: http://localhost:3000
-display_url: http://localhost:3000
+site_url: https://site-nivela-nine.vercel.app
+display_url: https://site-nivela-nine.vercel.app
 
 collections:
   - name: posts
