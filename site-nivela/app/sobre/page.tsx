@@ -3,6 +3,27 @@ import Link from "next/link";
 import { getCmsPage } from "@/lib/pages";
 import { whatsappHref } from "@/lib/whatsapp";
 
+export function generateMetadata() {
+  const cmsPage = getCmsPage("sobre");
+  const title = cmsPage?.title ?? "Sobre a Nivela";
+  const description =
+    cmsPage?.description ??
+    "Conheça a Nivela: engenharia, agrimensura e topografia com rigor técnico, clareza e responsabilidade patrimonial.";
+
+  return {
+    alternates: {
+      canonical: "/sobre",
+    },
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      url: "/sobre",
+    },
+  };
+}
+
 const values = [
   {
     title: "Missão",

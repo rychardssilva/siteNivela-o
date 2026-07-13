@@ -1,6 +1,16 @@
 import { NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
 
+function escapeHtml(value: string) {
+  return value.replace(/[&<>'"]/g, (character) => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    "'": "&#39;",
+    '"': "&quot;",
+  })[character] ?? character);
+}
+
 export async function POST(request: Request) {
   try {
     const { name, contact, subject, message } = await request.json();
@@ -22,14 +32,15 @@ export async function POST(request: Request) {
       },
     });
 
-    const emailText = `Olá, me chamo ${name}. <br><br>${message} <br><br>Aguardo retorno em ${contact}`;
+    const emailText = `Olá, me chamo ${name}.\n\n${message}\n\nAguardo retorno em ${contact}`;
+    const emailHtml = `Olá, me chamo ${escapeHtml(name)}.<br><br>${escapeHtml(message).replace(/\n/g, "<br>")}<br><br>Aguardo retorno em ${escapeHtml(contact)}`;
 
     await transporter.sendMail({
       from: `"${name}" <${process.env.EMAIL_USER}>`, 
-      to: process.env.EMAIL_RECEIVER || process.env.EMAIL_USER,
+      to: process.env.EMAIL_DESTINATION || process.env.EMAIL_RECEIVER || process.env.EMAIL_USER,
       subject: subject,
       text: emailText, 
-      html: `<p style="font-family: sans-serif; font-size: 16px; line-height: 1.5;">${emailText}</p>`,
+      html: `<p style="font-family: sans-serif; font-size: 16px; line-height: 1.5;">${emailHtml}</p>`,
     });
 
     return NextResponse.json({ success: true, message: 'E-mail enviado com sucesso!' });

@@ -3,6 +3,27 @@ import Link from "next/link";
 import { getCmsPage } from "@/lib/pages";
 import { whatsappHref } from "@/lib/whatsapp";
 
+export function generateMetadata() {
+  const cmsPage = getCmsPage("servicos");
+  const title = cmsPage?.title ?? "Serviços técnicos";
+  const description =
+    cmsPage?.description ??
+    "Levantamento topográfico, georreferenciamento, demarcação, plantas técnicas e regularização fundiária com responsabilidade técnica.";
+
+  return {
+    alternates: {
+      canonical: "/servicos",
+    },
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      url: "/servicos",
+    },
+  };
+}
+
 const services = [
   {
     icon: "LT",

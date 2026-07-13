@@ -12,11 +12,42 @@ import "@/styles/avaliacao-tecnica.css";
 
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import StructuredData from "@/components/StructuredData";
 
 export const metadata: Metadata = {
-  title: "Nivela | Território & Patrimônio",
+  metadataBase: new URL("https://site-nivela-nine.vercel.app"),
+  title: {
+    default: "Nivela | Território & Patrimônio",
+    template: "%s | Nivela",
+  },
   description:
-    "Agrimensura, cartografia, topografia e regularização fundiária com responsabilidade técnica.",
+    "Agrimensura, topografia, cartografia e regularização fundiária com responsabilidade técnica no Rio de Janeiro.",
+  applicationName: "Nivela",
+  authors: [{ name: "Nivela Território & Patrimônio" }],
+  creator: "Nivela Território & Patrimônio",
+  publisher: "Nivela Território & Patrimônio",
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    type: "website",
+    locale: "pt_BR",
+    url: "/",
+    siteName: "Nivela",
+    title: "Nivela | Território & Patrimônio",
+    description:
+      "Serviços técnicos de agrimensura, topografia e regularização fundiária para decisões patrimoniais mais seguras.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
 };
 
 export default function RootLayout({
@@ -27,6 +58,7 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <body>
+        <StructuredData />
         <div className="site-wrapper">
           <Header />
           {children}

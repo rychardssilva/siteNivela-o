@@ -2,6 +2,21 @@ import Link from "next/link";
 
 import { whatsappHref } from "@/lib/whatsapp";
 
+export const metadata = {
+  alternates: {
+    canonical: "/avaliacao-tecnica",
+  },
+  title: "Avaliação técnica de imóvel",
+  description:
+    "Avaliação técnica inicial para entender documentos, área, limites e riscos antes de comprar, vender, regularizar ou construir.",
+  openGraph: {
+    title: "Avaliação técnica de imóvel",
+    description:
+      "Entenda a situação técnica do seu imóvel antes de tomar decisões patrimoniais importantes.",
+    url: "/avaliacao-tecnica",
+  },
+};
+
 const contactHref = "/contato?assunto=avaliacao-tecnica";
 
 const problems = [

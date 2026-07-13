@@ -93,6 +93,7 @@
   padding: 0.7rem 1rem;
   font-size: 0.9rem;
   outline: none;
+  min-height: 44px;
 }
 
 .form-group textarea {
@@ -122,5 +123,9 @@
 @media (max-width: 640px) {
   .form-card {
     padding: 1.5rem;
+  }
+
+  .contact-method {
+    gap: 0.8rem;
   }
 }
