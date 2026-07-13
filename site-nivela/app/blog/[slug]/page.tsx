@@ -24,8 +24,19 @@ export async function generateMetadata({ params }: BlogPostPageProps) {
   }
 
   return {
-    title: `${post.title} | Nivela`,
+    title: post.title,
     description: post.description,
+    alternates: {
+      canonical: `/blog/${post.slug}`,
+    },
+    openGraph: {
+      title: post.title,
+      description: post.description,
+      url: `/blog/${post.slug}`,
+      type: "article",
+      publishedTime: post.date || undefined,
+      images: post.coverImage ? [post.coverImage] : undefined,
+    },
   };
 }
 

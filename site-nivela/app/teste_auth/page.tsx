@@ -1,4 +1,5 @@
 import TesteAuthClient from "./teste_auth-client";
+import type { Metadata } from "next";
 
 type TesteAuthPageProps = {
   searchParams?: Promise<{
@@ -6,8 +7,12 @@ type TesteAuthPageProps = {
   }>;
 };
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "Teste de autenticação",
+  robots: {
+    index: false,
+    follow: false,
+  },
 };
 
 export default async function TesteAuthPage({ searchParams }: TesteAuthPageProps) {

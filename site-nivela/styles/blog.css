@@ -142,6 +142,7 @@
   color: var(--text-muted);
   font-size: 1rem;
   line-height: 1.8;
+  overflow-wrap: anywhere;
 }
 
 .cms-content h1,
@@ -183,5 +184,34 @@
 @media (max-width: 900px) {
   .blog-full-grid {
     grid-template-columns: 1fr;
+  }
+
+  .blog-article-cover {
+    height: 300px;
+  }
+}
+
+@media (max-width: 640px) {
+  .blog-cats {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 0.25rem;
+  }
+
+  .cat-btn {
+    flex: 0 0 auto;
+  }
+
+  .blog-full-body,
+  .blog-card-body {
+    padding: 1.25rem;
+  }
+
+  .blog-article-cover {
+    height: 220px;
+  }
+
+  .cms-content {
+    font-size: 0.95rem;
   }
 }

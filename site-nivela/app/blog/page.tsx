@@ -3,6 +3,21 @@ import Image from "next/image";
 
 import { getAllPosts, getPostCategories } from "@/lib/posts";
 
+export const metadata = {
+  alternates: {
+    canonical: "/blog",
+  },
+  title: "Blog técnico",
+  description:
+    "Artigos sobre topografia, agrimensura, documentação de imóveis, limites, áreas e regularização fundiária.",
+  openGraph: {
+    title: "Blog técnico da Nivela",
+    description:
+      "Conteúdo técnico em linguagem clara para proprietários, advogados e pequenas construtoras.",
+    url: "/blog",
+  },
+};
+
 const fallbackColors = ["#0f3c57", "#1a4a2e", "#2f4f4f", "#3d2b00"];
 
 type BlogPageProps = {
